@@ -1,0 +1,39 @@
+{
+  "name": "decos",
+  "version": "0.0.1",
+  "description": "typescript additional decorators",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean:dist && tsc",
+    "rimraf": "rimraf",
+    "clean:dist": "npm run rimraf -- lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grachpower/decos.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "typescript",
+    "js"
+  ],
+  "author": "Duke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grachpower/decos/issues"
+  },
+  "homepage": "https://github.com/grachpower/decos#readme",
+  "devDependencies": {
+    "typescript": "^2.8.3",
+    "webpack": "^4.8.3",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "@types/jasmine": "^2.8.7",
+    "@types/node": "^10.0.8",
+    "@types/webpack": "^4.1.6",
+    "rimraf": "^2.6.2"
+  }
+}
