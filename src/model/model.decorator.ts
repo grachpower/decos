@@ -1,10 +1,47 @@
 import { getAutowired } from '../autowired/autowired.decorator';
 import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 
+function handler() {
+    return {
+        get(target, prop) {
+            if (prop in target) {
+                console.log(`${prop} найдено`);
+            } else {
+                console.log(`${prop} не найдено`);
+                throw new Error(`Property '${prop}' is not a part of target model`);
+            }
+
+            console.log(`Чтение ${prop}`);
+
+            return target[prop];
+        },
+        set(target, prop, value) {
+            if (prop in target) {
+                console.log(`${prop} найдено`);
+            } else {
+                console.log(`${prop} не найдено`);
+                throw new Error(`Property '${prop}' is not a part of target model`);
+            }
+
+            console.log(`Запись ${prop} ${value}`);
+
+            target[prop] = value;
+
+            return true;
+        }
+    };
+}
+
 export function Model(): Function {
     /* tslint:disable:only-arrow-functions*/
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         return class extends targetConstructor {
+            constructor(...params) {
+                super(params);
+
+                return new Proxy(this, handler());
+            };
+
             public resolveParams(params?: any): void {
                 params.forEach((value: any, key: string) => {
                     if (!Array.isArray(value)) {
