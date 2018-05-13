@@ -1,6 +1,6 @@
-const MAPPED_CLASS_METADATA_KEY: string = 'MappedClass_';
+import 'reflect-metadata';
 
-const reflect: any = Reflect;
+const MAPPED_CLASS_METADATA_KEY: string = 'MappedClass_';
 
 /**
  * Decorator MappedClass
@@ -17,7 +17,7 @@ export function MappedClass(targetClass: { new (data?: any): any; }): (target: a
         target[key] = undefined;
     }
 
-    reflect.defineMetadata(MAPPED_CLASS_METADATA_KEY + key, targetClass, target, key);
+    Reflect.defineMetadata(MAPPED_CLASS_METADATA_KEY + key, targetClass, target, key);
   };
 }
 
@@ -31,5 +31,5 @@ export function MappedClass(targetClass: { new (data?: any): any; }): (target: a
  * @return {any}
  */
 export function getMappedClass(target: any, propertyKey: string): any {
-  return reflect.getMetadata(MAPPED_CLASS_METADATA_KEY + propertyKey, target, propertyKey);
+  return Reflect.getMetadata(MAPPED_CLASS_METADATA_KEY + propertyKey, target, propertyKey);
 }

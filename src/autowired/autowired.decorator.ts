@@ -1,6 +1,6 @@
-const AUTOWIRED_METADATA_KEY: string = 'AUTOWIRED_';
+import 'reflect-metadata';
 
-const reflect: any = Reflect;
+const AUTOWIRED_METADATA_KEY: string = 'AUTOWIRED_';
 
 /**
  * Decorator Autowired will support auto init instance of dependency class
@@ -17,7 +17,7 @@ export function Autowired(targetClass: { new (data?: any): any; }): (target: any
         target[key] = undefined;
     }
 
-    reflect.defineMetadata(AUTOWIRED_METADATA_KEY + key, targetClass, target, key);
+    Reflect.defineMetadata(AUTOWIRED_METADATA_KEY + key, targetClass, target, key);
   };
 }
 
@@ -31,5 +31,5 @@ export function Autowired(targetClass: { new (data?: any): any; }): (target: any
  * @return {any}
  */
 export function getAutowired(target: any, propertyKey: string): any {
-  return reflect.getMetadata(AUTOWIRED_METADATA_KEY + propertyKey, target, propertyKey);
+  return Reflect.getMetadata(AUTOWIRED_METADATA_KEY + propertyKey, target, propertyKey);
 }

@@ -11,9 +11,12 @@ class KekModel {
     }
 }
 
-const params = {};
+const params = {
+    id: 256,
+    name: 'Artyom',
+};
 
-const testingModel = new KekModel();
+const testingModel = new KekModel(params);
 testingModel.id = 25;
 testingModel.name = 'kekes';
 (<any>testingModel).heh = 25;

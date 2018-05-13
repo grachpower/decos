@@ -35,13 +35,14 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         return class extends targetConstructor {
             constructor(...params) {
-                super(params);
+                super(...params);
 
                 return new Proxy(this, handler(allowStrictMode));
             };
 
             public resolveParams(params?: any): void {
-                params.forEach((value: any, key: string) => {
+                console.log(params);
+                Object.entries(params).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
                         throw new Error(`Property '${key}' is not a part of target model`);
                     }
