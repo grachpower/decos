@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npm run clean:dist && tsc",
     "rimraf": "rimraf",
-    "clean:dist": "npm run rimraf -- lib"
+    "clean:dist": "npm run rimraf -- lib",
+    "start:sandbox": "ts-node ./sandbox/index.ts"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,8 @@
     "@types/jasmine": "^2.8.7",
     "@types/node": "^10.0.8",
     "@types/webpack": "^4.1.6",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "save-dev": "^2.0.0",
+    "ts-node": "^6.0.3"
   }
 }
