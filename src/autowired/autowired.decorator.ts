@@ -13,6 +13,10 @@ const reflect: any = Reflect;
  */
 export function Autowired(targetClass: { new (data?: any): any; }): (target: any, targetKey?: string) => void {
   return (target: any, key: string): void => {
+    if (!(key in target)) {
+        target[key] = undefined;
+    }
+
     reflect.defineMetadata(AUTOWIRED_METADATA_KEY + key, targetClass, target, key);
   };
 }

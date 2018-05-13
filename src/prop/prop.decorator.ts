@@ -1,3 +1,5 @@
 export function prop(target: any, key: string) {
-    target[key] = undefined;
+    if (!(key in target)) {
+        target[key] = undefined;
+    }
 }

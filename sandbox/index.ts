@@ -6,16 +6,12 @@ class KekModel {
     @prop public id: number;
     @prop public name: string;
 
-    constructor(params: any = {}) {
-        this.id = params.id;
-        console.log('in nested constructor');
-        console.log('__________');
+    constructor(params?) {
+        (this as any).resolveParams(params);
     }
 }
 
-console.log('___________');
-console.log('kek kek kek runtime');
-console.log('___________');
+const params = {};
 
 const testingModel = new KekModel();
 testingModel.id = 25;
