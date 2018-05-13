@@ -4,6 +4,10 @@ import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 function handler(allowStrictMode: boolean) {
     return {
         get(target, prop) {
+            if (prop == 'toJSON') {
+                return () => target;
+            }
+
             if (allowStrictMode && !(prop in target)) {
                 throw new Error(`Property '${prop}' is not a part of target model`);
             }
@@ -46,6 +50,7 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
                 Object.entries(params).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
                         console.warn(`Property '${key}' is not a part of target model`);
+                        return;
                     }
 
                     if (!Array.isArray(value)) {

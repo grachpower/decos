@@ -22,3 +22,5 @@ testingModel.id = 25;
 testingModel.name = 'kekes';
 
 (<any>testingModel).lel = 25;
+
+console.log(JSON.stringify(testingModel));
