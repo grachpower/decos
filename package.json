@@ -1,6 +1,6 @@
 {
-  "name": "decos",
-  "version": "0.0.1",
+  "name": "dects",
+  "version": "1.0.0",
   "description": "typescript additional decorators",
   "main": "lib/index.js",
   "scripts": {
