@@ -43,5 +43,13 @@
   },
   "paths": {
     "tslib": [ "jspm_packages/npm/tslib@1.9.0/tslib.d.ts" ]
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json",
+        "enableTsDiagnostics": true
+      }
+    }
   }
 }

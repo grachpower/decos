@@ -47,6 +47,8 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
             };
 
             public resolveParams(params?: any): void {
+                if (!params) return;
+
                 Object.entries(params).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
                         console.warn(`Property '${key}' is not a part of target model`);
