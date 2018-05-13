@@ -14,9 +14,11 @@ class KekModel {
 const params = {
     id: 256,
     name: 'Artyom',
+    heh: 'heh',
 };
 
 const testingModel = new KekModel(params);
 testingModel.id = 25;
 testingModel.name = 'kekes';
-(<any>testingModel).heh = 25;
+
+(<any>testingModel).lel = 25;

@@ -12,7 +12,9 @@ function handler(allowStrictMode: boolean) {
         },
         set(target, prop, value) {
             if (allowStrictMode && !(prop in target)) {
-                throw new Error(`Property '${prop}' is not a part of target model`);
+                console.warn(`Property '${prop}' is not a part of target model`);
+
+                return true;
             }
 
             target[prop] = value;
@@ -41,10 +43,9 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
             };
 
             public resolveParams(params?: any): void {
-                console.log(params);
                 Object.entries(params).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
-                        throw new Error(`Property '${key}' is not a part of target model`);
+                        console.warn(`Property '${key}' is not a part of target model`);
                     }
 
                     if (!Array.isArray(value)) {
