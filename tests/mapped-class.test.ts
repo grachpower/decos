@@ -1,5 +1,40 @@
 import 'jest';
 
-test('adds 1 + 2 to equal 3', () => {
-    expect(1 + 2).toBe(3);
+import { Model, prop, MappedClass } from "../src";
+
+@Model()
+class Child {
+    @prop data: string;
+
+    constructor(params?) {
+        (this as any).resolveParams(params);
+    }
+}
+
+@Model()
+class TestingModel {
+    @prop id: number;
+    @prop name: string;
+
+    @MappedClass(Child) children: Child[];
+
+    constructor(params?) {
+        (this as any).resolveParams(params);
+    }
+}
+
+test('Should add @MappedClass child models', () => {
+    const testingParams = {
+        id: 24,
+        name: 'D11ke',
+        children: [
+            {data: 'foo'},
+            {data: 'bar'},
+        ],
+    };
+
+    const model = new TestingModel(testingParams);
+
+    expect(model.children[0] instanceof Child).toBeTruthy();
+    expect(model.children[1] instanceof Child).toBeTruthy();
 });
