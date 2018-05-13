@@ -4,8 +4,9 @@
   "description": "typescript additional decorators",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest",
-    "build": "npm run clean:dist && tsc",
+    "test": "npm run lint && jest",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib",
     "rimraf": "rimraf",
     "clean:dist": "npm run rimraf -- lib",
     "start:sandbox": "ts-node ./sandbox/index.ts"
@@ -39,11 +40,13 @@
     "@types/jasmine": "^2.8.7",
     "@types/node": "^10.0.8",
     "@types/webpack": "^4.1.6",
+    "codelyzer": "^4.3.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "save-dev": "^2.0.0",
     "ts-node": "^6.0.3",
-    "tslib": "^1.9.0"
+    "tslib": "^1.9.0",
+    "tslint": "^5.10.0"
   },
   "jest": {
     "transform": {

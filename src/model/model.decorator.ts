@@ -4,7 +4,7 @@ import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 function handler(allowStrictMode: boolean) {
     return {
         get(target, prop) {
-            if (prop == 'toJSON') {
+            if (prop === 'toJSON') {
                 return () => target;
             }
 
@@ -24,7 +24,7 @@ function handler(allowStrictMode: boolean) {
             target[prop] = value;
 
             return true;
-        }
+        },
     };
 }
 
@@ -38,20 +38,24 @@ export interface ModelConstructorInterface {
 export function Model(params: ModelConstructorInterface = {allowStrictMode: true}): Function {
     /* tslint:disable:only-arrow-functions*/
     const { allowStrictMode } = params;
+
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         return class extends targetConstructor {
-            constructor(...params) {
-                super(...params);
+            constructor(...parameters) {
+                super(...parameters);
 
                 return new Proxy(this, handler(allowStrictMode));
-            };
+            }
 
-            public resolveParams(params?: any): void {
-                if (!params) return;
+            public resolveParams(parameters?: any): void {
+                if (!parameters) {
+                    return;
+                }
 
-                Object.entries(params).forEach(([key, value]) => {
+                Object.entries(parameters).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
                         console.warn(`Property '${key}' is not a part of target model`);
+
                         return;
                     }
 
