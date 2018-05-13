@@ -1,6 +1,6 @@
 const AUTOWIRED_METADATA_KEY: string = 'AUTOWIRED_';
 
-const reflect: any = (window as any).Reflect;
+const reflect: any = Reflect;
 
 /**
  * Decorator Autowired will support auto init instance of dependency class

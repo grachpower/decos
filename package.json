@@ -37,6 +37,7 @@
     "@types/webpack": "^4.1.6",
     "rimraf": "^2.6.2",
     "save-dev": "^2.0.0",
-    "ts-node": "^6.0.3"
+    "ts-node": "^6.0.3",
+    "tslib": "^1.9.0"
   }
 }

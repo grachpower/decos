@@ -4,30 +4,16 @@ import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 function handler(allowStrictMode: boolean) {
     return {
         get(target, prop) {
-            if (allowStrictMode) {
-                if (prop in target) {
-                    console.log(`${prop} найдено`);
-                } else {
-                    console.log(`${prop} не найдено`);
-                    throw new Error(`Property '${prop}' is not a part of target model`);
-                }
+            if (allowStrictMode && !(prop in target)) {
+                throw new Error(`Property '${prop}' is not a part of target model`);
             }
-
-            console.log(`Чтение ${prop}`);
 
             return target[prop];
         },
         set(target, prop, value) {
-            if (allowStrictMode) {
-                if (prop in target) {
-                    console.log(`${prop} найдено`);
-                } else {
-                    console.log(`${prop} не найдено`);
-                    throw new Error(`Property '${prop}' is not a part of target model`);
-                }
+            if (allowStrictMode && !(prop in target)) {
+                throw new Error(`Property '${prop}' is not a part of target model`);
             }
-
-            console.log(`Запись ${prop} ${value}`);
 
             target[prop] = value;
 
@@ -43,8 +29,9 @@ export interface ModelConstructorInterface {
     allowStrictMode: boolean;
 }
 
-export function Model({allowStrictMode = true}: ModelConstructorInterface): Function {
+export function Model(params: ModelConstructorInterface = {allowStrictMode: true}): Function {
     /* tslint:disable:only-arrow-functions*/
+    const { allowStrictMode } = params;
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         return class extends targetConstructor {
             constructor(...params) {
@@ -56,7 +43,7 @@ export function Model({allowStrictMode = true}: ModelConstructorInterface): Func
             public resolveParams(params?: any): void {
                 params.forEach((value: any, key: string) => {
                     if (!(key in this) && allowStrictMode) {
-                        throw new Error(`Property '${prop}' is not a part of target model`);
+                        throw new Error(`Property '${key}' is not a part of target model`);
                     }
 
                     if (!Array.isArray(value)) {

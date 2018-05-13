@@ -1,6 +1,6 @@
 const MAPPED_CLASS_METADATA_KEY: string = 'MappedClass_';
 
-const reflect: any = (window as any).Reflect;
+const reflect: any = Reflect;
 
 /**
  * Decorator MappedClass
