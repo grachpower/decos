@@ -10,7 +10,8 @@
     "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib && npm run size",
     "rimraf": "rimraf",
     "clean:dist": "npm run rimraf -- lib",
-    "start:sandbox": "ts-node ./sandbox/index.ts"
+    "start:sandbox": "ts-node ./sandbox/index.ts",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
