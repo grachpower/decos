@@ -154,18 +154,8 @@
       "check-type"
     ],
     "class-name": false,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
-    "no-output-rename": true,
     "no-input-rename": false,
-    "use-life-cycle-interface": true,
-    "use-view-encapsulation": true,
-    "use-pipe-transform-interface": true,
-    "directive-class-suffix": true,
     "no-access-missing-member": false,
-    "templates-use-public": true,
-    "invoke-injectable": true,
     "only-arrow-functions": [
       true,
       "allow-declarations",
