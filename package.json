@@ -5,8 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run lint && jest",
+    "size": "size-limit",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib",
+    "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib && npm run size",
     "rimraf": "rimraf",
     "clean:dist": "npm run rimraf -- lib",
     "start:sandbox": "ts-node ./sandbox/index.ts"
@@ -31,15 +32,13 @@
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "jest": "^22.4.3",
+    "size-limit": "^0.18.0",
     "ts-jest": "^22.4.6",
     "typescript": "^2.8.3",
     "webpack": "^4.8.3",
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "@types/jasmine": "^2.8.7",
-    "@types/node": "^10.0.8",
-    "@types/webpack": "^4.1.6",
     "codelyzer": "^4.3.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
@@ -61,5 +60,11 @@
       "json",
       "node"
     ]
-  }
+  },
+  "size-limit": [
+    {
+      "path": "lib/*.js",
+      "limit": "9 KB"
+    }
+  ]
 }
