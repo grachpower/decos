@@ -1,6 +1,6 @@
 {
   "name": "dects",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "typescript additional decorators",
   "main": "lib/index.js",
   "scripts": {
