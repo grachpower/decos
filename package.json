@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint && jest",
     "size": "size-limit",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --force",
     "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib && npm run size",
     "rimraf": "rimraf",
     "clean:dist": "npm run rimraf -- lib",
