@@ -52,7 +52,7 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
                     return;
                 }
 
-                Object.entries(parameters).forEach(([key, value]) => {
+                (Object as any).entries(parameters).forEach(([key, value]) => {
                     if (!(key in this) && allowStrictMode) {
                         console.warn(`Property '${key}' is not a part of target model`);
 

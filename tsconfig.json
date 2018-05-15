@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -15,17 +15,16 @@
     "outDir": "lib",
     "lib": [
       "dom",
-      "es2015",
       "es2017",
+      "es2017.object"
     ],
     "baseUrl": "./src",
     "typeRoots": [
       "node_modules/@types"
-    ],
+    ]
   },
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
@@ -35,9 +34,6 @@
   "buildOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  },
-  "paths": {
-    "tslib": [ "jspm_packages/npm/tslib@1.9.0/tslib.d.ts" ]
   },
   "jest": {
     "globals": {
