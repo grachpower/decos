@@ -6,9 +6,7 @@ import { Model, prop, Autowired } from "../src";
 class Child {
     @prop data: string;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 @Model()
@@ -18,9 +16,7 @@ class TestingModel {
 
     @Autowired(Child) child: Child;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 @Model()
@@ -30,9 +26,7 @@ class CycleDepModel {
 
     @Autowired(CycleDepModel) cycleChild: CycleDepModel;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(private params?) {}
 }
 
 test('Should add @Autowired child models', () => {
@@ -63,10 +57,12 @@ test('Should work with cycle dependencies', () => {
             {data: 'foo'},
             {data: 'bar'},
         ],
-        cycleChild: {data: 'foo'},
+        cycleChild: {data: 'foo', id: 25, name: 'kek'},
     };
 
     const model = new CycleDepModel(testingParams);
 
     expect(model.cycleChild instanceof CycleDepModel).toBeTruthy();
+    expect(model.cycleChild.id).toBe(testingParams.cycleChild.id);
+    expect(model.cycleChild.name).toBe(testingParams.cycleChild.name);
 });

@@ -8,9 +8,7 @@ class TestingModel {
     @prop id: number;
     @prop name: string;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 test('Should create model this props from params', () => {
@@ -23,6 +21,7 @@ test('Should create model this props from params', () => {
     const model = new TestingModel(testingParams);
 
     expect(model).toBeTruthy();
+    expect(model instanceof TestingModel).toBeTruthy();
     expect(model.data).toBe(testingParams.data);
     expect(model.id).toBe(testingParams.id);
     expect(model.name).toBe(testingParams.name);
@@ -42,7 +41,7 @@ test('Should set only model prop defined with "prop" decorator', () => {
     expect(model.data).toBe(testingParams.data);
     expect(model.id).toBe(testingParams.id);
     expect(model.name).toBe(testingParams.name);
-    expect('lalka1' in model as any).toBeFalsy();
+    expect('lalka' in model as any).toBeFalsy();
 });
 
 test('Should have no access to set prop that is not a part of a module', () => {
@@ -53,6 +52,7 @@ test('Should have no access to set prop that is not a part of a module', () => {
 
     const model = new TestingModel(testingParams);
 
+    expect(model instanceof TestingModel).toBeTruthy();
     (model as any).foo = 'foo';
     expect('foo' in model).toBeFalsy();
 });
@@ -67,7 +67,7 @@ test('Should have access to set property if part of a model', () => {
     expect('data' in model).toBeTruthy();
 });
 
-test('Should throw error on getterif property is not a part of target', () => {
+test('Should throw error on getter if property is not a part of target', () => {
     const testingParams = {
         data: 24,
         id: 1,

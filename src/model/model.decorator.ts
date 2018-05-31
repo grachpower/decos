@@ -25,6 +25,12 @@ function handler(allowStrictMode: boolean) {
 
             return true;
         },
+        construct(target, [paramObj = {}]) {
+            const targetRes = new target(paramObj);
+            targetRes._resolveParams(paramObj);
+
+            return new Proxy(targetRes, handler(allowStrictMode));
+        },
     };
 }
 
@@ -39,51 +45,47 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
     /* tslint:disable:only-arrow-functions*/
     const { allowStrictMode } = params;
 
-    return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
-        return class extends targetConstructor {
-            constructor(...parameters) {
-                super(...parameters);
+    const resolveParams = function(parameters?: any): void {
+        if (!parameters) {
+            return;
+        }
 
-                return new Proxy(this, handler(allowStrictMode));
+        (Object as any).entries(parameters).forEach(([key, value]) => {
+            if (!(key in this) && allowStrictMode) {
+                console.warn(`Property '${key}' is not a part of target model`);
+
+                return;
             }
 
-            public resolveParams(parameters?: any): void {
-                if (!parameters) {
+            if (!Array.isArray(value)) {
+                const autowiredClass: new (data: any) => any = getAutowired(this, key);
+
+                if (autowiredClass !== undefined) {
+                    (this as any)[key] = new autowiredClass(value);
+
                     return;
                 }
 
-                (Object as any).entries(parameters).forEach(([key, value]) => {
-                    if (!(key in this) && allowStrictMode) {
-                        console.warn(`Property '${key}' is not a part of target model`);
+                (this as any)[key] = value;
 
-                        return;
-                    }
-
-                    if (!Array.isArray(value)) {
-                        const autowiredClass: new (data: any) => any = getAutowired(this, key);
-
-                        if (autowiredClass !== undefined) {
-                            (this as any)[key] = new autowiredClass(value);
-
-                            return;
-                        }
-
-                        (this as any)[key] = value;
-
-                        return;
-                    }
-
-                    const mappedClass: any = getMappedClass(this, key);
-
-                    if (mappedClass !== undefined) {
-                        (this as any)[key] = value.map((param: any) => new mappedClass(param));
-
-                        return;
-                    }
-
-                    (this as any)[key] = value;
-                });
+                return;
             }
-        };
+
+            const mappedClass: any = getMappedClass(this, key);
+
+            if (mappedClass !== undefined) {
+                (this as any)[key] = value.map((param: any) => new mappedClass(param));
+
+                return;
+            }
+
+            (this as any)[key] = value;
+        });
+    };
+
+    return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
+        targetConstructor.prototype._resolveParams = resolveParams;
+
+        return new Proxy(targetConstructor, handler(allowStrictMode));
     };
 }

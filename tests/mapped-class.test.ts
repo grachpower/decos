@@ -6,9 +6,7 @@ import { Model, prop, MappedClass } from "../src";
 class Child {
     @prop data: string;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 @Model()
@@ -18,9 +16,7 @@ class TestingModel {
 
     @MappedClass(Child) children: Child[];
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 test('Should add @MappedClass child models', () => {

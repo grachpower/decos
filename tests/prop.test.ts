@@ -7,9 +7,7 @@ import { Model } from "../src";
 class TestingModel {
     @prop data: number;
 
-    constructor(params?) {
-        (this as any).resolveParams(params);
-    }
+    constructor(params?) {}
 }
 
 test('Prop should define model undefined property', () => {
