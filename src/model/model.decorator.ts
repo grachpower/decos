@@ -9,7 +9,7 @@ function handler(allowStrictMode: boolean) {
             }
 
             if (allowStrictMode && !(prop in target)) {
-                throw new Error(`Property '${prop}' is not a part of target model`);
+                throw new Error(`Property ', ${prop}, ' is not a part of target model`);
             }
 
             return target[prop];
@@ -27,7 +27,7 @@ function handler(allowStrictMode: boolean) {
         },
         construct(target, [paramObj = {}]) {
             const targetRes = new target(paramObj);
-            targetRes._resolveParams(paramObj);
+            targetRes._resolveParams(paramObj, target);
 
             return new Proxy(targetRes, handler(allowStrictMode));
         },
@@ -45,7 +45,7 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
     /* tslint:disable:only-arrow-functions*/
     const { allowStrictMode } = params;
 
-    const resolveParams = function(parameters?: any): void {
+    const resolveParams = function(parameters: any = null, target: any): void {
         if (!parameters) {
             return;
         }
@@ -58,7 +58,15 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
             }
 
             if (!Array.isArray(value)) {
-                const autowiredClass: new (data: any) => any = getAutowired(this, key);
+                let autowiredClass: new (data: any) => any = getAutowired(this, key);
+
+                if (autowiredClass && target) {
+                    const testModel = new autowiredClass(null);
+
+                    if (testModel instanceof target) {
+                        autowiredClass = Model({allowStrictMode})(autowiredClass);
+                    }
+                }
 
                 if (autowiredClass !== undefined) {
                     (this as any)[key] = new autowiredClass(value);
@@ -71,7 +79,15 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
                 return;
             }
 
-            const mappedClass: any = getMappedClass(this, key);
+            let mappedClass: any = getMappedClass(this, key);
+
+            if (mappedClass && target) {
+                const testModel = new mappedClass(null);
+
+                if (testModel instanceof target) {
+                    mappedClass = Model({allowStrictMode})(mappedClass);
+                }
+            }
 
             if (mappedClass !== undefined) {
                 (this as any)[key] = value.map((param: any) => new mappedClass(param));
