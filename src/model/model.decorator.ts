@@ -1,5 +1,6 @@
 import { getAutowired } from '../autowired/autowired.decorator';
 import { getMappedClass } from '../mapped-class/mapped-class.decorator';
+import { cloneFunction } from '../helpers/clone-function';
 
 function handler(allowStrictMode: boolean) {
     return {
@@ -26,8 +27,19 @@ function handler(allowStrictMode: boolean) {
             return true;
         },
         construct(target, [paramObj = {}]) {
-            const targetRes = new target(paramObj);
-            targetRes._resolveParams(paramObj, target);
+            const innerConstructor = target.bind(null);
+
+            const innerTaget = new target(paramObj);
+            innerTaget._resolveParams(paramObj, target);
+
+            const realPrototype = {...target.prototype};
+            innerConstructor.prototype = realPrototype;
+
+            Object.keys(innerTaget).forEach(key => {
+                target.prototype[key] = innerTaget[key];
+            });
+
+            const targetRes = new innerConstructor(paramObj);
 
             return new Proxy(targetRes, handler(allowStrictMode));
         },
@@ -101,6 +113,10 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
 
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         targetConstructor.prototype._resolveParams = resolveParams;
+
+        Object.defineProperty(targetConstructor, '_resolveParams', {
+            enumerable: false,
+        });
 
         return new Proxy(targetConstructor, handler(allowStrictMode));
     };

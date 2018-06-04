@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Model, prop, Autowired } from "../src";
+import { Model, prop, Autowired } from '../src';
 
 @Model()
 class Child {

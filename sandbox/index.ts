@@ -1,4 +1,4 @@
-import {Autowired, prop} from '../src';
+import { Autowired, prop } from '../src';
 import { Model } from '../src';
 
 @Model()
@@ -23,6 +23,6 @@ const testingParams = {
 
 const model = new CycleDepModel(testingParams);
 
-(model as any).children = [1, 2 ,3];
+(model as any).children = [1, 2 , 3];
 
 console.log(JSON.stringify(model));
