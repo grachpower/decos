@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Model, prop } from "../src";
+import { Model, prop } from '../src';
 
 @Model()
 class TestingModel {
@@ -77,7 +77,6 @@ test('Should throw error on getter if property is not a part of target', () => {
 
     const getterFunc = () => (model as any).lalka;
 
-
     expect(model).toBeTruthy();
     expect(model.data).toBe(testingParams.data);
     expect(model.id).toBe(testingParams.id);
@@ -93,4 +92,26 @@ test('Should return property value if it is a part of target model', () => {
     const model = new TestingModel(testingParams);
     expect(model.data).toBe(testingParams.data);
     expect(model.id).toBe(testingParams.id);
+});
+
+test('User should be able to change props in constructor ', () => {
+    const testingParams = {
+        data: 24,
+        id: 1,
+    };
+
+    @Model()
+    class TestingModelWithConstructorLogic {
+        @prop data: number;
+        @prop id: number;
+        @prop name: string;
+
+        constructor(params?) {
+            this.id = 37;
+        }
+    }
+
+    const model = new TestingModelWithConstructorLogic(testingParams);
+
+    expect(model.id).toBe(37);
 });
