@@ -1,6 +1,10 @@
 import { getAutowired } from '../autowired/autowired.decorator';
 import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 
+function classDecorator<T extends {new(...args: any[]): {}}>(constructor: T) {
+    return class extends constructor {};
+}
+
 function handler(allowStrictMode: boolean) {
     return {
         get(target, prop) {
@@ -26,8 +30,16 @@ function handler(allowStrictMode: boolean) {
             return true;
         },
         construct(target, [paramObj = {}]) {
-            const targetRes = new target(paramObj);
-            targetRes._resolveParams(paramObj, target);
+            const innerConstructor = classDecorator(target.prototype.constructor);
+
+            const innerTaget = new target(paramObj);
+            innerTaget._resolveParams(paramObj, target);
+
+            Object.keys(innerTaget).forEach(key => {
+                innerConstructor.prototype[key] = innerTaget[key];
+            });
+
+            const targetRes = new innerConstructor(paramObj);
 
             return new Proxy(targetRes, handler(allowStrictMode));
         },
@@ -101,6 +113,10 @@ export function Model(params: ModelConstructorInterface = {allowStrictMode: true
 
     return function<T extends {new(...args: any[]): {}}>(targetConstructor: T): Function  {
         targetConstructor.prototype._resolveParams = resolveParams;
+
+        Object.defineProperty(targetConstructor, '_resolveParams', {
+            enumerable: false,
+        });
 
         return new Proxy(targetConstructor, handler(allowStrictMode));
     };
