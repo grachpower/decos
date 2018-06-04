@@ -1,6 +1,5 @@
 import { getAutowired } from '../autowired/autowired.decorator';
 import { getMappedClass } from '../mapped-class/mapped-class.decorator';
-import { cloneFunction } from '../helpers/clone-function';
 
 function classDecorator<T extends {new(...args: any[]): {}}>(constructor: T) {
     return class extends constructor {};
