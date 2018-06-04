@@ -2,6 +2,10 @@ import { getAutowired } from '../autowired/autowired.decorator';
 import { getMappedClass } from '../mapped-class/mapped-class.decorator';
 import { cloneFunction } from '../helpers/clone-function';
 
+function classDecorator<T extends {new(...args: any[]): {}}>(constructor: T) {
+    return class extends constructor {};
+}
+
 function handler(allowStrictMode: boolean) {
     return {
         get(target, prop) {
@@ -27,16 +31,13 @@ function handler(allowStrictMode: boolean) {
             return true;
         },
         construct(target, [paramObj = {}]) {
-            const innerConstructor = target.bind(null);
+            const innerConstructor = classDecorator(target.prototype.constructor);
 
             const innerTaget = new target(paramObj);
             innerTaget._resolveParams(paramObj, target);
 
-            const realPrototype = {...target.prototype};
-            innerConstructor.prototype = realPrototype;
-
             Object.keys(innerTaget).forEach(key => {
-                target.prototype[key] = innerTaget[key];
+                innerConstructor.prototype[key] = innerTaget[key];
             });
 
             const targetRes = new innerConstructor(paramObj);
