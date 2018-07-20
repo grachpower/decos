@@ -4,7 +4,7 @@
   "description": "typescript additional decorators",
   "main": "lib/index.js",
   "scripts": {
-    "test": "npm run lint && jest",
+    "test": "npm run lint && jest --coverage --colors",
     "size": "size-limit",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --force",
     "build": "npm run clean:dist && npm run test && tsc ./src/**.ts --outDir lib && npm run size",
