@@ -12,8 +12,8 @@
     "clean:dist": "npm run rimraf -- lib",
     "start:sandbox": "ts-node ./sandbox/index.ts",
     "prepublish": "npm run build",
-    "precommit": "npm test",
-    "prepush": "npm test"
+    "precommit": "npm run lint && npm test",
+    "prepush": "npm run build"
   },
   "repository": {
     "type": "git",
